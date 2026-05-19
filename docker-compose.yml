@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mdvsc-vitis-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mdvsc-vitis-ai-dev
+    environment:
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
+    volumes:
+      - .:/workspace
+    tty: true
+    stdin_open: true
+    network_mode: host
+    # 加上这两段
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
